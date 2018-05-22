@@ -15,7 +15,8 @@ var api=axios.create({
 export default new vuex.Store({
     state: {
         myList: [],
-        searchResults:[]
+        searchResults:[],
+        totalCals:0
     },
     mutations: {
         addItem(state,item){
@@ -23,6 +24,15 @@ export default new vuex.Store({
         },
         addtolist(state,item){
             state.myList.push(item)
+        },
+        addCals(state,payload){
+            state.totalCals+=payload
+        },
+        removefromlist(state,payload){
+            state.myList.splice(payload,1)
+        },
+        removeCals(state,payload){
+            state.totalCals-=payload
         }
     },
     actions: {
@@ -34,8 +44,15 @@ export default new vuex.Store({
         },
         addtolist({commit, dispatch},payload){
             commit("addtolist", payload)
-        }
-
+            dispatch('addCals', payload.nf_calories)
+        },
+addCals({commit, dispatch}, payload){
+commit('addCals', payload)
+},
+removefromlist({commit, dispatch}, payload){
+    commit('removefromlist', payload)
+    dispatch('removeCals', payload.nf_calories)
+}
 
     }
 })

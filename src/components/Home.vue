@@ -11,7 +11,8 @@
             <h3>Search results</h3>
             <ol>
               <li v-for="item in results">
-                  {{item.food_name}}
+                  <p>{{item.food_name}}</p>
+                  <p>k-Cals: {{item.nf_calories}}</p>  
                   <button @click="addtolist(item)">Add Food</button>
               </li>
             </ol>
@@ -25,14 +26,18 @@
         <div class="userlist">
             <h3>List</h3>
             <ol>
-              <li v-for="item in userlist">
-                  {{item.food_name}}
-                  <button @click="">Remove Food</button>
+              <li v-for="(item,index) in userlist">
+                  <router-link :to="{name:'foodDetails', params: {id:index}}">
+                  <p>{{item.food_name}}</p></router-link>
+                  <p>k-Cals: {{item.nf_calories}}</p>
+                  <button @click="removefromlist(index)">Remove Food</button>
               </li>
             </ol>
         </div>
         </div>
         </div>
+        <hr>
+        <h5>Total k-Calories: {{totalCals}}</h5>
     </div><!--finaldiv-->
 </template>
 
@@ -54,6 +59,9 @@ export default {
     },
     userlist(){
         return this.$store.state.myList
+    },
+    totalCals(){
+        return this.$store.state.totalCals
     }
   },
   methods: {
@@ -63,6 +71,9 @@ export default {
     },
     addtolist(item){
         this.$store.dispatch("addtolist", item)
+    },
+    removefromlist(index){
+        this.$store.dispatch("removefromlist", index)
     }
   }
 };
